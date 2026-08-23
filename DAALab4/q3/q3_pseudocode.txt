@@ -1,0 +1,57 @@
+Q3 - Application of Sorting III: k Integers Summing to T
+==========================================================
+Input : Set S of n integers, integer T, integer k (k >= 2)
+Output: TRUE/FALSE, whether some k elements of S sum to T
+        (also returns the chosen k elements)
+
+ALGORITHM BinarySearch(arr, lo, hi, target):
+    while lo <= hi:
+        mid <- lo + (hi - lo) / 2
+        if arr[mid] == target:
+            return mid
+        else if arr[mid] < target:
+            lo <- mid + 1
+        else:
+            hi <- mid - 1
+    return NOT_FOUND
+
+// Base case: does any pair within arr[start..n-1] sum to 'target'?
+ALGORITHM PairSumBinarySearch(arr, n, start, target, chosen[], chosenCount):
+    for i <- start to n-1:
+        need <- target - arr[i]
+        pos  <- BinarySearch(arr, i+1, n-1, need)   // O(log n)
+        if pos != NOT_FOUND:
+            chosen[chosenCount]   <- arr[i]
+            chosen[chosenCount+1] <- arr[pos]
+            return TRUE
+    return FALSE
+
+// Recursively fix one element per call; base case triggers at remaining == 2
+ALGORITHM kSumRec(arr, n, start, remaining, target, chosen[], chosenCount):
+    if remaining == 2:
+        return PairSumBinarySearch(arr, n, start, target, chosen, chosenCount)
+
+    for i <- start to n-remaining:
+        chosen[chosenCount] <- arr[i]
+        if kSumRec(arr, n, i+1, remaining-1, target - arr[i], chosen, chosenCount+1):
+            return TRUE
+    return FALSE
+
+ALGORITHM kSum(S, n, k, T):
+    if k < 2 or n < k:
+        return FALSE
+    arr <- copy of S
+    Sort(arr)                                   // O(n log n)
+    chosen <- array of size k
+    return kSumRec(arr, n, 0, k, T, chosen, 0)
+
+Time Complexity : O(n^(k-1) * log n)
+    - initial sort:                 O(n log n)
+    - (k-2) nested "fix an element" loops:  O(n^(k-2)) combinations
+    - base-case pair-sum via binary search: O(n log n) per combination
+    - dominant term: O(n^(k-2)) * O(n log n) = O(n^(k-1) log n)
+
+Space Complexity: O(n + k)
+    - sorted copy of S:  O(n)
+    - chosen[] array:    O(k)
+    - recursion depth:   O(k)

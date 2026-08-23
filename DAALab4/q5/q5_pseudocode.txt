@@ -1,0 +1,35 @@
+Q5 - Application of Sorting V: Merge Overlapping Intervals
+=============================================================
+Input : List I of n intervals (x_i, y_i)
+Output: List OUT of merged, non-overlapping intervals covering the
+        same union of points
+
+ALGORITHM MergeIntervals(I, n):
+    if n == 0:
+        return empty list
+
+    arr <- copy of I
+    Sort arr by left endpoint x ascending          // O(n log n)
+
+    OUT <- empty list
+    cur <- arr[0]
+
+    // Sweep -- O(n)
+    for i <- 1 to n-1:
+        if arr[i].x <= cur.y:            // overlaps or touches current interval
+            cur.y <- max(cur.y, arr[i].y)  // extend current interval
+        else:
+            append cur to OUT              // close current interval
+            cur <- arr[i]                  // start a new current interval
+
+    append cur to OUT                      // flush the last interval
+
+    return OUT
+
+// Example (from handout):
+//   I = {(1,3),(2,6),(8,10),(7,18)}
+//   sorted by x -> {(1,3),(2,6),(7,18),(8,10)}
+//   merged      -> {(1,6),(7,18)}
+
+Time Complexity : O(n log n)   [sort O(n log n) + single merge sweep O(n)]
+Space Complexity: O(n)         [sorted copy + output list]

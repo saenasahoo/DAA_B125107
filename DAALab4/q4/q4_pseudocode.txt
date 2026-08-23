@@ -1,0 +1,32 @@
+Q4 - Application of Sorting IV: Max Simultaneous People at a Party
+=====================================================================
+Input : Arrays a[0..n-1], b[0..n-1] -- entry and exit times of n people
+        (b[i] > a[i], all 2n times distinct)
+Output: The maximum number of people present at once, and a time at
+        which that maximum occurs
+
+ALGORITHM MaxSimultaneous(a, b, n):
+    events <- array of size 2n
+
+    // Build events -- O(n)
+    for i <- 0 to n-1:
+        events[2*i]   <- (time = a[i], delta = +1)   // entry
+        events[2*i+1] <- (time = b[i], delta = -1)   // exit
+
+    Sort events by 'time' ascending                   // O(n log n)
+
+    count <- 0
+    best  <- 0
+    bestTime <- events[0].time
+
+    // Sweep -- O(n)
+    for each event in events (in sorted order):
+        count <- count + event.delta
+        if count > best:
+            best <- count
+            bestTime <- event.time
+
+    return best, bestTime
+
+Time Complexity : O(n log n)   [event construction O(n) + sort O(n log n) + sweep O(n)]
+Space Complexity: O(n)         [events array of size 2n]

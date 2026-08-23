@@ -1,0 +1,41 @@
+Q6 - Application of Sorting VI: Point Covered by Max Intervals
+==================================================================
+Input : Set S of n intervals [l_i, r_i] on a line (endpoints INCLUSIVE)
+Output: A point p lying in the largest number of intervals, and that count
+
+ALGORITHM MaxPointCoverage(l, r, n):
+    events <- array of size 2n
+
+    // Build events -- O(n)
+    for i <- 0 to n-1:
+        events[2*i]   <- (coord = l[i], type = START)
+        events[2*i+1] <- (coord = r[i], type = END)
+
+    // Sort by coordinate; on ties, STARTs come before ENDs.
+    // (This correctly counts a shared inclusive endpoint as being
+    //  inside both intervals.)                                 // O(n log n)
+    Sort events by (coord ascending, START before END on ties)
+
+    count <- 0
+    best  <- 0
+    bestPoint <- events[0].coord
+
+    // Sweep -- O(n)
+    for each event in events (in sorted order):
+        if event.type == START:
+            count <- count + 1
+            if count > best:
+                best <- count
+                bestPoint <- event.coord
+        else:   // END
+            count <- count - 1
+
+    return best, bestPoint
+
+// Example (from handout):
+//   S = {(10,40),(20,60),(50,90),(15,70)}
+//   No point lies in all four intervals, but the algorithm finds
+//   best = 3 (e.g. at coordinate 20, matching p=50 in three intervals)
+
+Time Complexity : O(n log n)   [event construction O(n) + sort O(n log n) + sweep O(n)]
+Space Complexity: O(n)         [events array of size 2n]

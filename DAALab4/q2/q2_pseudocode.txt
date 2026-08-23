@@ -1,0 +1,31 @@
+Q2 - Application of Sorting II: Pair Sum from Two Sets
+========================================================
+Input : Sets S1[0..n-1], S2[0..n-1], integer x
+Output: TRUE/FALSE, whether some a in S1 and b in S2 satisfy a + b = x
+        (also returns the pair if found)
+
+ALGORITHM BinarySearch(arr, lo, hi, target):
+    while lo <= hi:
+        mid <- lo + (hi - lo) / 2
+        if arr[mid] == target:
+            return mid            // found at index mid
+        else if arr[mid] < target:
+            lo <- mid + 1
+        else:
+            hi <- mid - 1
+    return NOT_FOUND
+
+ALGORITHM FindPairSum(S1, n1, S2, n2, x):
+    sorted2 <- copy of S2
+    Sort(sorted2)                         // O(n log n)
+
+    for i <- 0 to n1-1:                   // O(n)
+        need <- x - S1[i]
+        pos <- BinarySearch(sorted2, 0, n2-1, need)   // O(log n)
+        if pos != NOT_FOUND:
+            return TRUE, pair (S1[i], sorted2[pos])
+
+    return FALSE, no pair
+
+Time Complexity : O(n log n)     [sort: O(n log n); n binary searches: O(n log n)]
+Space Complexity: O(n)           [sorted copy of S2]

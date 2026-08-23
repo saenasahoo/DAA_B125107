@@ -1,0 +1,35 @@
+Q1 - Application of Sorting I: Sort by Colour
+==============================================
+Input : Array A[0..n-1] of pairs (number, colour), colour in {RED, BLUE, YELLOW},
+        already sorted by 'number'
+Output: Array OUT[0..n-1] with all RED pairs first, then all BLUE, then all
+        YELLOW, numbers staying sorted within each colour
+
+ALGORITHM SortByColour(A, n):
+    // three empty buckets, one per colour
+    bucketRED    <- empty list
+    bucketBLUE   <- empty list
+    bucketYELLOW <- empty list
+
+    // Pass 1: distribute items into buckets, in the order encountered -- O(n)
+    for i <- 0 to n-1:
+        switch A[i].colour:
+            case RED:    append A[i] to bucketRED
+            case BLUE:   append A[i] to bucketBLUE
+            case YELLOW: append A[i] to bucketYELLOW
+
+    // Pass 2: concatenate buckets in RED, BLUE, YELLOW order -- O(n)
+    OUT <- empty list
+    append all of bucketRED    to OUT
+    append all of bucketBLUE   to OUT
+    append all of bucketYELLOW to OUT
+
+    return OUT
+
+// Correctness note: since A is already sorted by 'number' and each bucket
+// only ever has items appended to its end (never reordered), every bucket
+// individually remains sorted by 'number'. Hence OUT is sorted by colour
+// group while preserving numeric order within each group.
+
+Time Complexity : O(n)
+Space Complexity: O(n)
