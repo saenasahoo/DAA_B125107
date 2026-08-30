@@ -1,0 +1,65 @@
+DAA LAB-5, QUESTION 1
+Find the median of a list of N numbers WITHOUT sorting the list.
+
+-------------------------------------------------------------
+IDEA
+-------------------------------------------------------------
+The median of N numbers is:
+  - the element at rank  (N/2 + 1)          if N is odd   (0-indexed rank N/2)
+  - the average of elements at ranks
+        N/2  and  N/2 + 1                    if N is even  (0-indexed ranks N/2 - 1, N/2)
+
+Instead of sorting the whole array (O(N log N)), we only need the
+element(s) of a given RANK. This is exactly the "Selection Problem",
+solved here with Hoare's randomized QUICKSELECT, which finds the
+k-th smallest element in O(N) expected time without fully sorting
+the array.
+
+-------------------------------------------------------------
+ALGORITHM: PARTITION(A, low, high)
+-------------------------------------------------------------
+1.  pivotIndex <- RANDOM(low, high)          // randomized pivot
+2.  SWAP A[pivotIndex] with A[high]
+3.  pivot <- A[high]
+4.  i <- low - 1
+5.  for j <- low to high - 1 do
+6.        if A[j] <= pivot then
+7.              i <- i + 1
+8.              SWAP A[i] with A[j]
+9.  SWAP A[i + 1] with A[high]
+10. return i + 1                              // final index of pivot
+
+-------------------------------------------------------------
+ALGORITHM: QUICKSELECT(A, low, high, k)
+-------------------------------------------------------------
+// returns the element that would sit at index k (0-indexed) if A were sorted
+1.  if low = high then
+2.        return A[low]
+3.  pivotPos <- PARTITION(A, low, high)
+4.  if k = pivotPos then
+5.        return A[pivotPos]
+6.  else if k < pivotPos then
+7.        return QUICKSELECT(A, low, pivotPos - 1, k)
+8.  else
+9.        return QUICKSELECT(A, pivotPos + 1, high, k)
+
+-------------------------------------------------------------
+ALGORITHM: FIND_MEDIAN(A, N)
+-------------------------------------------------------------
+1.  if N is odd then
+2.        return QUICKSELECT(A, 0, N-1, N/2)
+3.  else
+4.        left  <- QUICKSELECT(A, 0, N-1, N/2 - 1)
+5.        right <- QUICKSELECT(A, 0, N-1, N/2)
+6.        return (left + right) / 2.0
+
+-------------------------------------------------------------
+NOTE
+-------------------------------------------------------------
+Since QUICKSELECT partitions the array in place, calling it twice
+(steps 4 and 5 above) for the even case requires either
+(a) re-partitioning from scratch each call (still O(N) expected each,
+    O(N) total expected), or
+(b) a single pass that also tracks the immediate neighbour of the
+    pivot once k is found - implemented in the accompanying C code
+    as a "dual-target" quickselect for efficiency.

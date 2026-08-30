@@ -1,0 +1,63 @@
+DAA LAB-5, QUESTION 4
+Implement Heap Sort to sort N randomly generated elements stored
+in a file. Do the complexity analysis of your algorithm.
+
+-------------------------------------------------------------
+OVERALL PLAN
+-------------------------------------------------------------
+1. GENERATE N random integers and WRITE them to an input file
+   ("input.txt"), one per line.
+2. READ the N integers back from the file into an array.
+3. Build a MAX-HEAP from the array (HEAPIFY, bottom-up).
+4. Repeatedly swap the root (maximum) with the last element and
+   restore the heap property on the shrinking heap (HEAP SORT).
+5. WRITE the sorted array to an output file ("output.txt").
+
+-------------------------------------------------------------
+ALGORITHM: MAX_HEAPIFY(A, n, i)
+-------------------------------------------------------------
+// n = current heap size, i = index to sift down from
+1.  largest <- i
+2.  left  <- 2*i + 1
+3.  right <- 2*i + 2
+4.  if left < n and A[left] > A[largest] then
+5.        largest <- left
+6.  if right < n and A[right] > A[largest] then
+7.        largest <- right
+8.  if largest != i then
+9.        SWAP A[i] with A[largest]
+10.       MAX_HEAPIFY(A, n, largest)          // sift down further
+
+-------------------------------------------------------------
+ALGORITHM: BUILD_MAX_HEAP(A, n)
+-------------------------------------------------------------
+1.  for i <- floor(n/2) - 1 down to 0 do
+2.        MAX_HEAPIFY(A, n, i)
+
+-------------------------------------------------------------
+ALGORITHM: HEAP_SORT(A, n)
+-------------------------------------------------------------
+1.  BUILD_MAX_HEAP(A, n)
+2.  for end <- n - 1 down to 1 do
+3.        SWAP A[0] with A[end]              // move max to sorted end
+4.        MAX_HEAPIFY(A, end, 0)             // restore heap on A[0..end-1]
+
+-------------------------------------------------------------
+FILE I/O (same pattern as Q3)
+-------------------------------------------------------------
+GENERATE_FILE(filename, N):
+    write N random integers to filename, one per line
+
+READ_FILE(filename) -> A, N:
+    read all integers from filename into array A, count = N
+
+WRITE_FILE(filename, A, N):
+    write A[0..N-1] to filename, one per line
+
+-------------------------------------------------------------
+MAIN DRIVER
+-------------------------------------------------------------
+1.  GENERATE_FILE("input.txt", N)
+2.  A, N <- READ_FILE("input.txt")
+3.  HEAP_SORT(A, N)
+4.  WRITE_FILE("output.txt", A, N)

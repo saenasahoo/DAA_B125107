@@ -1,0 +1,57 @@
+DAA LAB-5, QUESTION 2
+Find the K'th smallest element in a given list of N numbers
+WITHOUT sorting the list.
+
+-------------------------------------------------------------
+IDEA
+-------------------------------------------------------------
+This is the classical "Selection Problem": find the element that
+would occupy position K (1-indexed) if the array were sorted,
+without performing a full sort. We use randomized QUICKSELECT
+(a Quicksort-style partitioning scheme applied to only the side
+of the array that can contain the answer).
+
+-------------------------------------------------------------
+ALGORITHM: PARTITION(A, low, high)
+-------------------------------------------------------------
+1.  pivotIndex <- RANDOM(low, high)
+2.  SWAP A[pivotIndex] with A[high]
+3.  pivot <- A[high]
+4.  i <- low - 1
+5.  for j <- low to high - 1 do
+6.        if A[j] <= pivot then
+7.              i <- i + 1
+8.              SWAP A[i] with A[j]
+9.  SWAP A[i + 1] with A[high]
+10. return i + 1
+
+-------------------------------------------------------------
+ALGORITHM: QUICKSELECT(A, low, high, k)
+-------------------------------------------------------------
+// k is the 0-indexed target rank (k = K - 1 for the K'th smallest, K >= 1)
+1.  if low = high then
+2.        return A[low]
+3.  pivotPos <- PARTITION(A, low, high)
+4.  if k = pivotPos then
+5.        return A[pivotPos]
+6.  else if k < pivotPos then
+7.        return QUICKSELECT(A, low, pivotPos - 1, k)
+8.  else
+9.        return QUICKSELECT(A, pivotPos + 1, high, k)
+
+-------------------------------------------------------------
+ALGORITHM: KTH_SMALLEST(A, N, K)
+-------------------------------------------------------------
+1.  if K < 1 or K > N then
+2.        error "K out of range"
+3.  return QUICKSELECT(A, 0, N - 1, K - 1)
+
+-------------------------------------------------------------
+WALKTHROUGH EXAMPLE
+-------------------------------------------------------------
+A = [9, 3, 7, 1, 5],  K = 2 (2nd smallest)
+Target 0-indexed rank k = 1
+Sorted reference: [1, 3, 5, 7, 9]  -> 2nd smallest = 3
+QUICKSELECT partitions around a random pivot and recurses only into
+the half that can contain rank 1, so we never touch the whole array
+more than necessary -> answer = 3
