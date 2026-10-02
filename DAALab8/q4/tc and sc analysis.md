@@ -1,0 +1,5 @@
+Time (tails array): The array tails is always sorted, where tails[k] is the smallest possible tail of an increasing subsequence of length k+1. Each of the n elements needs one binary search over at most len ≤ n entries, so T = Σ O(log len) = O(n log n).
+Best and worst case: In a strictly decreasing array len stays 1, each search is O(1), and the total is O(n). In a strictly increasing array len grows to n and each search costs about log i, giving Θ(n log n).
+Space: The input array and tails are both O(n), so O(n) in total.
+Note: tails gives the length but is not itself the subsequence. To reconstruct it you also store, for each element, the index of its predecessor (another O(n) array), which keeps space at O(n).
+DP comparison: The classical dp[i] = 1 + max dp[j] over j<i with a[j]<a[i] is Θ(n²) time (the inner loop runs 0+1+…+(n−1) = n(n−1)/2 times) and O(n) space.

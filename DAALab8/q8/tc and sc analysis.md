@@ -1,0 +1,3 @@
+Time: There are three nested loops: the chain length l = 1..n, the start i = 1..n−l+1, and the root r = i..j (which takes l iterations). The total is Σ_{l=1}^{n} (n−l+1)·l = n(n+1)(n+2)/6 = Θ(n³). The weight w[i][j] is built from w[i][j−1] + p[j] + q[j] in O(1). Without that trick, summing probabilities each time would add O(n) per cell, which is still O(n³) overall but slower in practice.
+Space: The three tables e, w, and root are each about (n+2)×(n+1), so Θ(n²).
+Knuth's optimisation: Since root[i][j−1] ≤ root[i][j] ≤ root[i+1][j], the root loop only scans that range. Along one diagonal (fixed l) the ranges telescope to O(n) total work. Over n diagonals that gives O(n²) time. Space stays O(n²).

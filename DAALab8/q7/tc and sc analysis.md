@@ -1,0 +1,3 @@
+Time: For each length j = 1..n the inner loop tries every first piece i = 1..j. The total is Σ j = n(n+1)/2 = Θ(n²). Each iteration is O(1). The reconstruction loop removes at least 1 unit per step, so it runs at most n times, which is O(n).
+Why DP: The plain recursion has T(n) = 1 + Σ_{i=0}^{n−1} T(i), which solves to 2ⁿ. DP removes the repeated subproblems, since there are only n distinct ones.
+Space: The arrays p, r, and cut are each O(n), so O(n) overall.

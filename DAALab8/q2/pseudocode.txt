@@ -1,0 +1,5 @@
+dp[0] ← 1, dp[1..V] ← 0
+for each coin c in C:          // coins outer, so order is ignored
+    for v ← c to V:
+        dp[v] ← dp[v] + dp[v−c]
+return dp[V]

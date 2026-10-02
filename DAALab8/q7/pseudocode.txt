@@ -1,0 +1,10 @@
+r[0] ← 0
+for j ← 1..n:
+    r[j] ← −∞
+    for i ← 1..j:
+        if p[i] + r[j−i] > r[j]:
+            r[j] ← p[i] + r[j−i]
+            cut[j] ← i
+// reconstruct
+while n > 0: print cut[n]; n ← n − cut[n]
+return r[n]

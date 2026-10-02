@@ -1,0 +1,3 @@
+Time: The subproblems are dp[0..V], which is V+1 states. Each state tries all n coins, and each try is O(1) (one comparison and one addition). So T = Σ_{v=1..V} n = Θ(nV). Best and worst case are the same, because the inner loop has no early exit.
+Pseudo-polynomial: V is a numeric value, not the input length. Writing V takes log V bits, so in terms of input size the running time is exponential.
+Space: The dp array holds V+1 integers and the coin array holds n, giving O(n + V). You can't go below O(V) because every dp[v] may be needed later. If you also store which coin was chosen (for reconstruction), that is another O(V) array, so the space is still O(V).

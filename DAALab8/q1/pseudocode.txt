@@ -1,0 +1,7 @@
+dp[0] ← 0
+for v ← 1 to V:
+    dp[v] ← ∞
+    for each coin c in C:
+        if c ≤ v and dp[v−c] ≠ ∞:
+            dp[v] ← min(dp[v], dp[v−c] + 1)
+return dp[V] = ∞ ? −1 : dp[V]

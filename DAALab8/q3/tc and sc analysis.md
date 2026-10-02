@@ -1,0 +1,4 @@
+Time: For each coin c_i, the inner loop runs V − c_i + 1 times. The total is Σ (V − c_i + 1) ≤ nV, so it is O(nV). It is Θ(nV) when the coins are small relative to V.
+Why space drops: The 2D version dp[i][v] costs O(nV) space. But dp[i][v] depends only on dp[i−1][v] (the same array before the update) and dp[i][v−c_i] (the same array, already updated). That lets the 2D table collapse into one row, so space is O(V).
+Loop order: Putting the coin loop outside counts each multiset once (combinations). Putting the amount loop outside would count permutations, which is wrong for this problem.
+Growth of the answer: The count can be as large as O(V^{n−1}), which needs about n·log V bits. unsigned long long overflows for large inputs. The O(1)-per-addition assumption holds only while the values fit in a machine word.

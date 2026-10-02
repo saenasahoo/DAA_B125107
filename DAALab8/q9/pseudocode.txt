@@ -1,0 +1,17 @@
+function collatz(n):
+    steps ← 0, peak ← n
+    while n ≠ 1:
+        if n even: n ← n / 2
+        else:
+            if n > (MAX − 1) / 3: return OVERFLOW
+            n ← 3n + 1
+        peak ← max(peak, n)
+        steps++
+    return steps, peak
+
+function analyseInterval(a, b):
+    for n ← a..b:
+        (s, pk) ← collatz(n)
+        if OVERFLOW: report and continue
+        update longest trajectory, highest peak, total steps
+    print longest, peak, average

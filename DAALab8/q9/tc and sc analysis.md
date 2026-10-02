@@ -1,0 +1,5 @@
+Time for one n: Each step is O(1) (a parity check, a divide, or a multiply-and-add), so the time is O(steps(n)). There is no proven bound on steps(n), because proving that the loop terminates for all n is exactly the open conjecture. Heuristically, the average number of steps is about 7·ln n, so O(log n) per value. Worst cases can be much larger: n = 27 takes 111 steps and peaks at 9232.
+Time for an interval [a,b]: The cost is Σ_{n=a}^{b} steps(n). Heuristically that is about (b−a+1)·O(log b). It is not a guaranteed bound.
+Space: The iterative version keeps only a few counters (n, steps, peak), so O(1). Printing the trajectory is also O(1) extra, since values are printed as they are produced. Storing the trajectory would cost O(steps). A recursive version would use O(steps) stack.
+Overflow: unsigned long long holds values up to about 1.8×10¹⁹. The guard n > (ULLONG_MAX − 1)/3 stops before 3n+1 overflows. Without it, wraparound could produce a wrong trajectory or an infinite loop.
+Optimisation: Memoising steps for values below some bound B trades O(B) space for fewer recomputed steps across the interval.

@@ -1,0 +1,13 @@
+for i ← 0..m: D[i][0] ← i
+for j ← 0..n: D[0][j] ← j
+for i ← 1..m:
+    for j ← 1..n:
+        cost ← (A[i] ≠ B[j]) ? 1 : 0
+        D[i][j] ← min(D[i−1][j] + 1,        // delete
+                      D[i][j−1] + 1,        // insert
+                      D[i−1][j−1] + cost)   // match/substitute
+// traceback from (m,n)
+while i > 0 or j > 0:
+    if i>0 and j>0 and D[i][j] = D[i−1][j−1] + cost: print match/substitute; i--, j--
+    else if i>0 and D[i][j] = D[i−1][j] + 1: print delete A[i]; i--
+    else: print insert B[j]; j--
