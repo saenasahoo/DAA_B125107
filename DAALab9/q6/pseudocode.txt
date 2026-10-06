@@ -1,0 +1,11 @@
+count[c] ← frequency of each char
+maxHeap ← all (count[c], c)
+result ← empty
+for i = 1..n:
+    if i > K:                          // char placed K steps ago is free again
+        c ← result[i−K]
+        if count[c] > 0: push (count[c], c)
+    if maxHeap empty: return ""        // impossible
+    (cnt, c) ← extractMax
+    result[i] ← c; count[c] ← count[c] − 1
+return result

@@ -1,0 +1,11 @@
+seq ← [∞, w1, w2, …, wn, ∞]
+cost ← 0
+while seq has more than 3 items (one real node left otherwise):
+    k ← smallest index with seq[k−1] ≤ seq[k+1]   // first "local dip"
+    s ← seq[k−1] + seq[k]
+    cost ← cost + s
+    make node (seq[k−1], seq[k]); remove both from seq
+    j ← nearest index left of k with seq[j] ≥ s
+    insert node(s) right after position j
+depth of each leaf ← its depth in the final merge tree
+return cost = Σ wᵢ · depth(i), tree depths

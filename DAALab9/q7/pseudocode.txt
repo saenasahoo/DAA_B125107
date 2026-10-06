@@ -1,0 +1,11 @@
+maxHeap ← empty; minVal ← ∞
+for each x in A:
+    if x is odd: x ← 2x            // make every value as large as it can get
+    push x; minVal ← min(minVal, x)
+ans ← top(maxHeap) − minVal
+while top(maxHeap) is even:
+    x ← extractMax
+    x ← x / 2
+    push x; minVal ← min(minVal, x)
+    ans ← min(ans, top(maxHeap) − minVal)
+return ans

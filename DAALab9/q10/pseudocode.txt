@@ -1,0 +1,6 @@
+remove every string that is a substring of another (and duplicates)
+while more than one string remains:
+    (a, b) ← ordered pair with maximum overlap(a, b)
+    // overlap(a, b) = longest suffix of a that is a prefix of b
+    replace a and b by merge(a, b) = a + b[overlap:]
+return the remaining string

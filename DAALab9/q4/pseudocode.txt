@@ -1,0 +1,6 @@
+minHeap ← all L[i]; cost ← 0
+while size(minHeap) > 1:
+    a ← extractMin; b ← extractMin
+    cost ← cost + a + b
+    insert (a + b)
+return cost

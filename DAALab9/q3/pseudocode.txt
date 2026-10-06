@@ -1,0 +1,9 @@
+sort stations by distance
+maxHeap ← empty; reach ← F; stops ← 0; i ← 1
+while reach < D:
+    while i ≤ n and d[i] ≤ reach:
+        push f[i] into maxHeap; i ← i + 1
+    if maxHeap empty: return -1
+    reach ← reach + extractMax(maxHeap)
+    stops ← stops + 1
+return stops

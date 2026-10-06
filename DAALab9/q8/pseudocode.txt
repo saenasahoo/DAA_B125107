@@ -1,0 +1,8 @@
+sort intervals by start
+minHeap ← empty (stores end times); rooms ← 0
+for each [s, e] in sorted order:
+    if minHeap not empty and top(minHeap) ≤ s:
+        extractMin                     // reuse that room
+    push e
+    rooms ← max(rooms, size(minHeap))
+return rooms

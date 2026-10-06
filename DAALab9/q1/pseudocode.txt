@@ -1,0 +1,12 @@
+t ← 0; total ← 0; used[1..n] ← false
+while W > 0:
+    best ← none; bestDensity ← 0
+    for each unused i:
+        d ← v[i]/w[i] − λ[i]·t
+        if d > bestDensity: best ← i; bestDensity ← d
+    if best = none: break
+    take ← min(w[best], W)
+    total ← total + bestDensity · take
+    W ← W − take; t ← t + take
+    used[best] ← true
+return total

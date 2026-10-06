@@ -1,0 +1,11 @@
+make a min-heap of leaf nodes (symbol, freq)
+while heap size > 1:
+    x ← extractMin; y ← extractMin
+    z ← new node, freq = x.freq + y.freq, children x, y
+    insert z
+len[s] ← depth of leaf s (1 if only one symbol)
+sort symbols by (len, symbol)
+code ← 0
+for k = 1..n:
+    if k > 1: code ← (code + 1) << (len[k] − len[k−1])
+    codebook[symbol k] ← code written in len[k] bits

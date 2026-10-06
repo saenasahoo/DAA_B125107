@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef long long ll;
+ll H[100005]; int hn=0;
+void hpush(ll x){int i=hn++;H[i]=x;
+ while(i&&H[(i-1)/2]>H[i]){ll t=H[i];H[i]=H[(i-1)/2];H[(i-1)/2]=t;i=(i-1)/2;}}
+ll hpop(){ll r=H[0];H[0]=H[--hn];int i=0;
+ for(;;){int l=2*i+1,m=i,q=l+1;
+  if(l<hn&&H[l]<H[m])m=l; if(q<hn&&H[q]<H[m])m=q; if(m==i)break;
+  ll t=H[i];H[i]=H[m];H[m]=t;i=m;}
+ return r;}
+typedef struct{ll s,e;}I;
+int cmp(const void*a,const void*b){ll x=((I*)a)->s,y=((I*)b)->s;return (x>y)-(x<y);}
+int main(){
+ int n; scanf("%d",&n);
+ I a[n]; for(int i=0;i<n;i++) scanf("%lld %lld",&a[i].s,&a[i].e);
+ qsort(a,n,sizeof(I),cmp);
+ int rooms=0;
+ for(int i=0;i<n;i++){
+  if(hn&&H[0]<=a[i].s) hpop();   // reuse a freed room
+  hpush(a[i].e);
+  if(hn>rooms) rooms=hn;
+ }
+ printf("%d\n",rooms);
+}
