@@ -1,0 +1,49 @@
+Q3: Maximum Weight Component with Size ≤ K
+ALGORITHM FIND(x)
+    while parent[x] ≠ x do
+        parent[x] ← parent[parent[x]]
+        x ← parent[x]
+    return x
+
+ALGORITHM HEAP-PUSH(H, (wt, r))              // max-heap keyed on wt
+    append (wt, r) to H;  i ← last index
+    while i > 0 and H[parent_idx(i)].wt < H[i].wt do
+        swap(H[i], H[parent_idx(i)]);  i ← parent_idx(i)
+
+ALGORITHM HEAP-POP(H)
+    H[0] ← H[last];  remove last;  i ← 0
+    loop
+        l ← 2i+1;  r ← 2i+2;  m ← i
+        if l < |H| and H[l].wt > H[m].wt then m ← l
+        if r < |H| and H[r].wt > H[m].wt then m ← r
+        if m = i then break
+        swap(H[i], H[m]);  i ← m
+
+ALGORITHM BEST(H, K)                         // lazy deletion of stale entries
+    while H not empty do
+        (wt, r) ← H[0]
+        if parent[r] = r and sum[r] = wt and size[r] ≤ K then
+            return wt                        // entry is current and valid
+        HEAP-POP(H)                          // stale: r merged or sum changed or too big
+    return 0
+
+ALGORITHM MAX-WEIGHT-COMPONENT(V, K, w[0..V-1], E)
+Input : V vertices with weights w, size limit K, E edges added in order
+Output: after each edge, max total weight of a component with size ≤ K
+    H ← empty max-heap
+    for x ← 0 to V-1 do
+        parent[x] ← x;  size[x] ← 1;  sum[x] ← w[x]
+    if K ≥ 1 then
+        for x ← 0 to V-1 do HEAP-PUSH(H, (sum[x], x))
+    for i ← 1 to E do
+        read edge (u, v)                     // edge weight, if any, is ignored
+        a ← FIND(u);  b ← FIND(v)
+        if a ≠ b then
+            if size[a] < size[b] then swap(a, b)
+            parent[b] ← a
+            size[a]   ← size[a] + size[b]
+            sum[a]    ← sum[a] + sum[b]
+            if size[a] ≤ K then HEAP-PUSH(H, (sum[a], a))
+        print BEST(H, K)
+
+Time : O((V+E) log(V+E))    Space: O(V+E)

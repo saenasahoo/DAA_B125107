@@ -1,0 +1,44 @@
+Q4: Reverse Time-Step DSU Application
+ALGORITHM FIND(x)
+    while parent[x] ≠ x do
+        parent[x] ← parent[parent[x]]
+        x ← parent[x]
+    return x
+
+ALGORITHM UNION(a, b)
+    a ← FIND(a);  b ← FIND(b)
+    if a = b then return
+    if size[a] < size[b] then swap(a, b)
+    parent[b] ← a
+    size[a]   ← size[a] + size[b]
+    sum[a]    ← sum[a] + sum[b]
+
+ALGORITHM REVERSE-DELETION(V, E)
+Input : vertex weights w[0..V-1] (non-negative), E edges,
+        deletion order P[0..V-1]
+Output: after each deletion, max component sum among remaining vertices
+    // Step 1: build adjacency list
+    for x ← 0 to V-1 do adj[x] ← empty list
+    for each edge (u, v) do
+        append v to adj[u];  append u to adj[v]
+
+    // Step 2: initialise DSU; no vertex is present yet
+    for x ← 0 to V-1 do
+        parent[x] ← x;  size[x] ← 1;  sum[x] ← w[x];  present[x] ← false
+
+    // Step 3: process the deletions backwards (deleting = un-adding)
+    best ← 0
+    ans[V-1] ← 0                             // all vertices deleted
+    for i ← V-1 down to 1 do
+        x ← P[i]
+        present[x] ← true                    // add P[i] back
+        for each y in adj[x] do
+            if present[y] = true then UNION(x, y)
+        best ← max(best, sum[FIND(x)])
+        ans[i-1] ← best                      // state after deleting P[0..i-1]
+
+    // Step 4: output
+    for i ← 0 to V-1 do
+        print "After deleting P[i]:", ans[i]
+
+Time : O((V+E)·α(V))        Space: O(V+E)

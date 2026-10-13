@@ -1,0 +1,39 @@
+Q2: Dynamic Connected Components in a Grid
+ALGORITHM FIND(x)
+    while parent[x] ≠ x do
+        parent[x] ← parent[parent[x]]        // path halving
+        x ← parent[x]
+    return x
+
+ALGORITHM UNION(a, b)
+    a ← FIND(a);  b ← FIND(b)
+    if a = b then return false
+    if size[a] < size[b] then swap(a, b)
+    parent[b] ← a
+    size[a]   ← size[a] + size[b]
+    return true
+
+ALGORITHM ISLANDS-ONLINE(R, C, K)
+Input : R×C grid of water, K land additions (r1,c1)…(rK,cK)
+Output: number of islands after each addition
+    N ← R × C
+    for id ← 0 to N-1 do
+        parent[id] ← id;  size[id] ← 1;  land[id] ← false
+    count ← 0
+    dr ← [-1, +1, 0, 0];  dc ← [0, 0, -1, +1]
+    for k ← 1 to K do
+        read (r, c)
+        id ← r × C + c                       // coordinate flattening
+        if land[id] = false then
+            land[id] ← true
+            count ← count + 1                // new cell = new island
+            for d ← 0 to 3 do
+                nr ← r + dr[d];  nc ← c + dc[d]
+                if 0 ≤ nr < R and 0 ≤ nc < C then
+                    nid ← nr × C + nc
+                    if land[nid] = true then
+                        if UNION(id, nid) then
+                            count ← count - 1   // two islands merged
+        print count
+
+Time : O(R·C + K·α(R·C))    Space: O(R·C)
