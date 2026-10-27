@@ -1,0 +1,27 @@
+ALGORITHM BidirectionalWordLadder(D, A, B, L)
+  if B ∉ D: return -1
+  if A = B: return 0
+  Insert all words of D (and A, if absent) into hash table T
+  side[w] ← 0 for all w                    // 0 = unvisited, 1 = from A, 2 = from B
+  side[A] ← 1, dist[A] ← 0, Q1 ← {A}
+  side[B] ← 2, dist[B] ← 0, Q2 ← {B}
+
+  while Q1 not empty and Q2 not empty:
+      if |Q1| ≤ |Q2|: (Qcur, me, other) ← (Q1, 1, 2)
+      else:           (Qcur, me, other) ← (Q2, 2, 1)
+
+      best ← ∞
+      for each word u in current level of Qcur:      // expand one full level
+          for pos ← 1 to L:
+              for each char c in 'a'..'z', c ≠ u[pos]:
+                  v ← u with u[pos] replaced by c
+                  if v ∉ T: continue                 // O(L) hash lookup
+                  if side[v] = other:
+                      best ← min(best, dist[u] + 1 + dist[v])
+                  else if side[v] = 0:
+                      side[v] ← me
+                      dist[v] ← dist[u] + 1
+                      enqueue(Qcur, v)
+
+      if best < ∞: return best                       // minimum over the whole level
+  return -1

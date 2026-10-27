@@ -1,0 +1,23 @@
+ALGORITHM VoronoiBFS(G, H[1..K], R)
+  for each v in V: dist[v] ← -1, owner[v] ← -1
+  Queue Q ← empty
+
+  for i ← 1 to K:                          // index order gives tie-break
+      if dist[H[i]] = -1:
+          dist[H[i]] ← 0
+          owner[H[i]] ← i
+          enqueue(Q, H[i])
+
+  while Q not empty:
+      u ← dequeue(Q)
+      if dist[u] = R: continue             // radius cutoff
+      for each neighbor v of u:
+          if dist[v] = -1:
+              dist[v] ← dist[u] + 1
+              owner[v] ← owner[u]
+              enqueue(Q, v)
+          else if dist[v] = dist[u] + 1 and owner[u] < owner[v]:
+              owner[v] ← owner[u]          // equal distance: smaller hub index wins
+
+  // vertices never reached keep owner = -1 (d_min > R)
+  return owner[1..|V|], dist[1..|V|]

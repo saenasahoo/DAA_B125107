@@ -1,0 +1,20 @@
+ALGORITHM ParityZeroOneBFS(G, S, C)
+  // state (v, p): p = parity of weight-1 edges used so far
+  for each v in V, p in {0,1}: d[v][p] ← ∞
+  d[S][0] ← 0
+  Deque DQ ← empty
+  push_back(DQ, (S, 0))
+
+  while DQ not empty:
+      (u, p) ← pop_front(DQ)
+      for each edge (u, v, w) in Adj[u]:
+          q ← p XOR w                     // weight 1 flips parity
+          if d[u][p] + w < d[v][q]:
+              d[v][q] ← d[u][p] + w
+              if w = 0: push_front(DQ, (v, q))
+              else:     push_back(DQ, (v, q))
+
+  for each v in V:
+      ans[v] ← min( d[v][0],  d[v][1] + C )
+      if ans[v] = ∞: report "unreachable"
+      else: report ans[v]
